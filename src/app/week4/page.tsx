@@ -1,92 +1,152 @@
 "use client";
 import { useState } from "react";
 import styles from "./page.module.css";
+import { Funnel_Sans } from "next/font/google";
 
 export default function Home() {
-  // State to hold the user-entered number
-  const [input, setInput] = useState("");
-
-  // State to hold any input validation error message
+  // State to hold any input1 validation error message
   const [error, setError] = useState("");
 
   // State to hold the base selected from the dropdown (default is 2)
-  const [base, setBase] = useState(2);
+  const [base1, setBase1] = useState("1");
+  const [base2, setBase2] = useState("1");
 
   // State to store the final result string after conversion
-  const [result, setResult] = useState("");
+  const [result1, setResult1] = useState("");
+  const [result2, setResult2] = useState("");
 
-  // Handles input change and validates that only digits are entered
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const [truthTable, setTruthTable] = useState("");
 
-    // Use regex to allow only digits (0-9)
-    if (/^\d*$/.test(value)) {
-      setInput(value); // Valid input
-      setError(""); // Clear any previous error
-    } else {
-      setError("Please enter numbers only."); // Show error on invalid input
+  function logicalAnd(a: boolean, b: boolean): boolean {
+    return a && b;
+  }
+
+  function logicalOr(a: boolean, b: boolean): boolean {
+    return a || b;
+  }
+
+  function logicalNot(a: boolean): boolean {
+    return !a;
+  }
+
+  function implication(a: boolean, b: boolean): boolean {
+    return !a || b;
+  }
+
+  function biconditional(a: boolean, b: boolean): boolean {
+    return a === b;
+  }
+
+  function boolToInt(val: boolean): number {
+    return val ? 1 : 0;
+  }
+
+  const A = base1 === "1";
+  const B = base2 === "1";
+
+  function logicalOperators() {
+    const output = `
+    A AND B: ${boolToInt(logicalAnd(A, B))}
+    A OR B: ${boolToInt(logicalOr(A, B))}
+    NOT A: ${boolToInt(logicalNot(A))}
+    NOT B: ${boolToInt(logicalNot(B))}
+    A → B (IF A THEN B): ${boolToInt(implication(A, B))}
+    A ↔ B (IF AND ONLY IF): ${boolToInt(biconditional(A, B))}
+  `;
+    setResult1(output);
+  }
+
+  function generateTruthTable(): void {
+    const rows = [["A", "B", "AND", "OR", "NOT A", "NOT B", "A → B", "A ↔ B"]];
+
+    for (let a = 0; a <= 1; a++) {
+      for (let b = 0; b <= 1; b++) {
+        const A = Boolean(a);
+        const B = Boolean(b);
+        rows.push([
+          a.toString(),
+          b.toString(),
+          boolToInt(A && B).toString(),
+          boolToInt(A || B).toString(),
+          boolToInt(!A).toString(),
+          boolToInt(!B).toString(),
+          boolToInt(!A || B).toString(),
+          boolToInt(A === B).toString(),
+        ]);
+      }
     }
-  };
 
-  // Converts the entered number to the selected base
-  const convertNumber = () => {
-    // Check if input is empty
-    if (!input) {
-      setError("Input cannot be empty.");
-      return;
-    }
+    // Format output with columns aligned
+    const formatted = rows
+      .map((row) => row.map((cell) => cell.padEnd(7)).join(""))
+      .join("\n");
 
-    // Parse input as a base-10 integer
-    const num = parseInt(input, 10);
-
-    // Convert the number to the selected base and make letters uppercase (for Hex)
-    const converted = num.toString(base).toUpperCase();
-
-    // Set the final result string to display
-    setResult(`${input} in base ${base} is ${converted}`);
-  };
+    setTruthTable(formatted);
+  }
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         {/* Title of the app */}
-        <h1>Enter a number and select the base to convert it to</h1>
+        <h1>Select a value for A and B</h1>
 
-        {/* Layout for input and dropdown side by side */}
+        {/* Layout for input1 and dropdown side by side */}
         <div style={{ display: "flex", gap: "2rem", marginBottom: "1rem" }}>
-          {/* Input box for user to enter a number */}
-          <div>
-            <input
-              type="text"
-              value={input}
-              onChange={handleInputChange}
-              placeholder="Enter number"
-            />
-            {/* Show error message in red if input is invalid */}
-            {error && <p style={{ color: "red" }}>{error}</p>}
-          </div>
+          {/* Input1 box for user to enter a number */}
+
+          {/* Show error message in red if input1 is invalid */}
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
           {/* Dropdown for selecting base (from 2 to 16) */}
           <div>
-            <select
-              value={base}
-              onChange={(e) => setBase(parseInt(e.target.value))}
-            >
-              {/* Generate base options dynamically */}
-              {Array.from({ length: 15 }, (_, i) => i + 2).map((b) => (
-                <option key={b} value={b}>
-                  Base {b}
-                </option>
-              ))}
+            <p>Value A</p>
+            <select value={base1} onChange={(e) => setBase1(e.target.value)}>
+              <option value={1}>TRUE</option>
+              <option value={0}>FALSE</option>
+            </select>
+          </div>
+          <div>
+            <p>Value B</p>
+            <select value={base2} onChange={(e) => setBase2(e.target.value)}>
+              <option value={1}>TRUE</option>
+              <option value={0}>FALSE</option>
             </select>
           </div>
         </div>
         <div>
           {/* Button to trigger conversion */}
-          <button onClick={convertNumber}>Convert</button>
+          <button onClick={logicalOperators}>Logical Operator</button>
 
           {/* Display conversion result if available */}
-          {result && <h2 style={{ marginTop: "1rem" }}>{result}</h2>}
+          {result1 && (
+            <div
+              style={{
+                whiteSpace: "pre",
+              }}
+            >
+              {result1}
+            </div>
+          )}
+        </div>
+        <div>
+          <button onClick={generateTruthTable}>Generate Truth Table</button>
+
+          {truthTable && (
+            <pre style={{ marginTop: "1rem" }}>
+              <p>{truthTable}</p>
+            </pre>
+          )}
+
+          {/* Display conversion result if available */}
+          {result2 && (
+            <div
+              style={{
+                whiteSpace: "pre",
+              }}
+            >
+              {result2}
+            </div>
+          )}
         </div>
       </main>
 

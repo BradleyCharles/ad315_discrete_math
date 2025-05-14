@@ -7,8 +7,8 @@ export default function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
         {/* Title of the app */}
-        <h1>Select a week to view the assignment</h1>
-
+        <h1>AD315 Discrete Math</h1>
+        <h2>Select a week to view the assignment</h2>
         {/* Layout for input and dropdown side by side */}
         <div style={{ display: "flex", gap: "2rem", marginBottom: "1rem" }}>
           <div>
