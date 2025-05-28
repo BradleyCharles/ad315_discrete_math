@@ -11,9 +11,12 @@ export default function Home() {
   const [base1, setBase1] = useState("1");
   const [base2, setBase2] = useState("1");
 
+  const [input, setInput] = useState("");
+
   // State to store the final result string after conversion
   const [result1, setResult1] = useState("");
   const [result2, setResult2] = useState("");
+  const [result3, setResult3] = useState("");
 
   const [truthTable, setTruthTable] = useState("");
 
@@ -84,6 +87,8 @@ export default function Home() {
     setTruthTable(formatted);
   }
 
+  function handleInputChange() {}
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -145,6 +150,40 @@ export default function Home() {
               }}
             >
               {result2}
+            </div>
+          )}
+        </div>
+
+        {/* -------------------------------------------------------------------------------------------------------------- */}
+        <h1>Enter a number to become a power set</h1>
+
+        <div style={{ display: "flex", gap: "2rem", marginBottom: "1rem" }}>
+          {/* Input1 box for user to enter a number */}
+
+          {/* Show error message in red if input1 is invalid */}
+          {error && <p style={{ color: "red" }}>{error}</p>}
+
+          <div>
+            <input
+              type="text"
+              value={input}
+              onChange={handleInputChange}
+              placeholder="Enter number"
+            />
+            {/* Show error1 message in red if input1 is invalid */}
+          </div>
+        </div>
+
+        <div>
+          <button onClick={generateTruthTable}>Generate Power Set</button>
+          {/* Display conversion result if available */}
+          {result3 && (
+            <div
+              style={{
+                whiteSpace: "pre",
+              }}
+            >
+              {result3}
             </div>
           )}
         </div>
