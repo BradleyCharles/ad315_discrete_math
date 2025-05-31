@@ -12,11 +12,11 @@ export default function Home() {
   const [base2, setBase2] = useState("1");
 
   const [input, setInput] = useState("");
+  const [powerSet, setPowerSet] = useState<string[][]>([]);
 
   // State to store the final result string after conversion
   const [result1, setResult1] = useState("");
   const [result2, setResult2] = useState("");
-  const [result3, setResult3] = useState("");
 
   const [truthTable, setTruthTable] = useState("");
 
@@ -87,7 +87,26 @@ export default function Home() {
     setTruthTable(formatted);
   }
 
-  function handleInputChange() {}
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInput(value);
+  };
+
+  function generatePowerSet() {
+    const elements = input
+      .split(",")
+      .map((e) => e.trim())
+      .filter((e) => e !== "");
+
+    const result: string[][] = [[]];
+
+    for (const elem of elements) {
+      const newSubsets = result.map((subset) => [...subset, elem]);
+      result.push(...newSubsets);
+    }
+
+    setPowerSet(result);
+  }
 
   return (
     <div className={styles.page}>
@@ -175,15 +194,19 @@ export default function Home() {
         </div>
 
         <div>
-          <button onClick={generateTruthTable}>Generate Power Set</button>
+          <button onClick={generatePowerSet}>Generate Power Set</button>
+
           {/* Display conversion result if available */}
-          {result3 && (
-            <div
-              style={{
-                whiteSpace: "pre",
-              }}
-            >
-              {result3}
+          {powerSet && (
+            <div style={{ whiteSpace: "pre" }}>
+              <h2 className="text-lg font-semibold">Power Set:</h2>
+              <ul className="list-disc list-inside">
+                {powerSet.map((subset, index) => (
+                  <li key={index}>
+                    {subset.length > 0 ? subset.join(", ") : "∅"}
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </div>
