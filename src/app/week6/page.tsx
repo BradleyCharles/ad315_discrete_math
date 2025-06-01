@@ -22,7 +22,6 @@ export default function Home() {
     const dice = Math.floor(Math.random() * 6) + 1;
     const diceRoll = "You rolled a " + dice;
     setResult2(diceRoll);
-    for ()
   }
   function probabilityCard() {
     const card = Math.floor(Math.random() * 13) + 1;
