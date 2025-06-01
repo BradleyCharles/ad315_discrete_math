@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "ad315_discrete_math": "file:",
     "mathjs": "^14.5.0",
     "next": "15.3.0",
     "react": "^19.0.0",

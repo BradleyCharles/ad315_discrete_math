@@ -3,48 +3,31 @@ import { useState } from "react";
 import styles from "./page.module.css";
 
 export default function Home() {
-  // State to hold the user-entered number
-  const [input, setInput] = useState("");
-
-  // State to hold any input validation error message
-  const [error, setError] = useState("");
-
-  // State to hold the base selected from the dropdown (default is 2)
-  const [base, setBase] = useState(2);
-
   // State to store the final result string after conversion
-  const [result, setResult] = useState("");
+  const [result1, setResult1] = useState("");
+  const [result2, setResult2] = useState("");
+  const [result3, setResult3] = useState("");
+  const [result4, setResult4] = useState("");
+  const [result5, setResult5] = useState("");
 
-  // Handles input change and validates that only digits are entered
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-
-    // Use regex to allow only digits (0-9)
-    if (/^\d*$/.test(value)) {
-      setInput(value); // Valid input
-      setError(""); // Clear any previous error
+  function probabilityCoin() {
+    const coin = Math.random();
+    if (coin > 0.5) {
+      setResult1("Heads");
     } else {
-      setError("Please enter numbers only."); // Show error on invalid input
+      setResult1("Tails");
     }
-  };
-
-  // Converts the entered number to the selected base
-  const convertNumber = () => {
-    // Check if input is empty
-    if (!input) {
-      setError("Input cannot be empty.");
-      return;
-    }
-
-    // Parse input as a base-10 integer
-    const num = parseInt(input, 10);
-
-    // Convert the number to the selected base and make letters uppercase (for Hex)
-    const converted = num.toString(base).toUpperCase();
-
-    // Set the final result string to display
-    setResult(`${input} in base ${base} is ${converted}`);
-  };
+  }
+  function probabilityDice() {
+    const dice = Math.floor(Math.random() * 6) + 1;
+    const diceRoll = "You rolled a " + dice;
+    setResult2(diceRoll);
+    for ()
+  }
+  function probabilityCard() {
+    const card = Math.floor(Math.random() * 13) + 1;
+  }
+  function probability2Coin() {}
 
   return (
     <div className={styles.page}>
@@ -52,41 +35,18 @@ export default function Home() {
         {/* Title of the app */}
         <h1>Enter a number and select the base to convert it to</h1>
 
-        {/* Layout for input and dropdown side by side */}
-        <div style={{ display: "flex", gap: "2rem", marginBottom: "1rem" }}>
-          {/* Input box for user to enter a number */}
-          <div>
-            <input
-              type="text"
-              value={input}
-              onChange={handleInputChange}
-              placeholder="Enter number"
-            />
-            {/* Show error message in red if input is invalid */}
-            {error && <p style={{ color: "red" }}>{error}</p>}
-          </div>
-
-          {/* Dropdown for selecting base (from 2 to 16) */}
-          <div>
-            <select
-              value={base}
-              onChange={(e) => setBase(parseInt(e.target.value))}
-            >
-              {/* Generate base options dynamically */}
-              {Array.from({ length: 15 }, (_, i) => i + 2).map((b) => (
-                <option key={b} value={b}>
-                  Base {b}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
         <div>
-          {/* Button to trigger conversion */}
-          <button onClick={convertNumber}>Convert</button>
-
+          {/* Buttons */}
+          <button onClick={probabilityCoin}>Flip a coin</button>{" "}
+          <button onClick={probabilityDice}>Roll a dice</button>{" "}
+          <button onClick={probabilityCard}>Draw a card</button>{" "}
+          <button onClick={probability2Coin}>Flip 2 coins</button>{" "}
           {/* Display conversion result if available */}
-          {result && <h2 style={{ marginTop: "1rem" }}>{result}</h2>}
+          {result1 && <h2 style={{ marginTop: "1rem" }}>{result1}</h2>}
+          {result2 && <h2 style={{ marginTop: "1rem" }}>{result2}</h2>}
+          {result3 && <h2 style={{ marginTop: "1rem" }}>{result3}</h2>}
+          {result4 && <h2 style={{ marginTop: "1rem" }}>{result4}</h2>}
+          {result5 && <h2 style={{ marginTop: "1rem" }}>{result5}</h2>}
         </div>
       </main>
 
