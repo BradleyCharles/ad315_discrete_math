@@ -1,6 +1,7 @@
 "use client";
 import styles from "./page.module.css";
 import Link from "next/link";
+import GoBackButton from "../components/GoBackButton";
 
 export default function Home() {
   return (
@@ -20,11 +21,9 @@ export default function Home() {
               <button>Probability Calculator for N-sided Dice</button>
             </Link>
           </div>
-          </div>
+        </div>
       </main>
-
-      {/* Optional footer section */}
-      <footer className={styles.footer}></footer>
+      <GoBackButton />
     </div>
   );
 }
