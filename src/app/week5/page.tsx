@@ -2,6 +2,7 @@
 import { useState } from "react";
 import styles from "./page.module.css";
 import * as math from "mathjs";
+import GoBackButton from "../components/GoBackButton";
 
 export default function Home() {
   // State to hold the user-entered number
@@ -114,9 +115,7 @@ export default function Home() {
           )}
         </div>
       </main>
-
-      {/* Optional footer section */}
-      <footer className={styles.footer}></footer>
+      <GoBackButton />
     </div>
   );
 }

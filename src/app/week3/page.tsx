@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import styles from "./page.module.css";
+import GoBackButton from "../components/GoBackButton";
 
 export default function Home() {
   const [input1, setInput1] = useState("");
@@ -299,60 +300,7 @@ export default function Home() {
         </div>
         {/* -------------------------------------------------------------------------------------------------------- */}
       </main>
-
-      {/* 
-1. Rounding Modes
-IEEE 754 defines 5 rounding modes, but not all languages expose them fully:
-
-Language	  Can Change?           Notes
-C/C++	         ✅(via <fenv.h>)	Full control via fesetround().
-Java	         ❌	              No API to change rounding mode directly.
-JavaScript	   ❌	              Uses IEEE 754 double-precision (64-bit), rounding mode fixed.
-Python	       ❌	              Python uses C double under the hood. Decimal module allows configurable rounding.
-Rust	         ❌	              No native way to switch modes, but can use libm or FFI for control.
-Go	           ❌	              Always uses this; no user control.
-
-2. Overflow and Underflow Handling
-IEEE 754 requires returning Infinity or 0, not crashing.
-
-Language		  Notes
-C/C++		      May raise floating-point exceptions if enabled.
-Java	        Uses Infinity, -Infinity, and subnormal numbers.
-JavaScript		1e308 * 10 === Infinity, 1e-324 / 10 === 0.
-Python		    Follows IEEE 754; check math.isinf(), math.isnan().
-Fortran		    Depends on compiler flags.
-Rust/Go		    Silent overflow/underflow by design.
-
-
-3. Exception Handling
-IEEE 754 defines floating-point exceptions, but:
-
-Language      	Signals Exceptions?	  Traps?	  Notes
-C/C++	          ✅ (if enabled)	    ✅	      Via fenv.h; traps optional.
-Java	          ❌	                  ❌	      Silent by design.
-JavaScript	    ❌	                  ❌	      Always silent.
-Python	        ❌	                  ❌	      Use decimal for traps.
-Rust	          ❌	                  ❌	      Panics are manual.
-Go	            ❌	                  ❌	      No trap mechanism.
-
-Summary
-Feature	Strict Control	  Silent Behavior
-C/C++	      ✅ High	    Can be noisy or silent
-Java	      ❌ Low	      ✅ Silent
-JavaScript	❌ None	    ✅ Silent
-Python	    ❌ Moderate	✅ Silent (unless using decimal)
-Rust/Go	    ❌ None	    ✅ Silent
-
-Conclusion
-For precise numerical control (e.g., scientific computing), C/C++ is best due to full IEEE 754 support.
-
-For general app development, silent handling (as in Python/JS) is simpler and preferred.
-
-Use extended libraries (e.g., Python's decimal, Rust's rug, Java’s BigDecimal) for better control over rounding and exceptions.
- */}
-
-      {/* Optional footer section */}
-      <footer className={styles.footer}></footer>
+      <GoBackButton />
     </div>
   );
 }

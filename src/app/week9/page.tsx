@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import styles from "./page.module.css";
+import GoBackButton from "../components/GoBackButton";
 
 export default function Home() {
   // State to hold the user-entered values
@@ -111,7 +112,7 @@ export default function Home() {
           {result && <h2 style={{ marginTop: "1rem" }}>{result}</h2>}
         </div>
       </main>
-      <footer className={styles.footer}></footer>
+      <GoBackButton />
     </div>
   );
 }

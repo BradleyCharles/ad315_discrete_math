@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import styles from "./page.module.css";
-import Link from "next/link";
+import GoBackButton from "../components/GoBackButton";
 
 export default function Home() {
   return (
@@ -9,15 +9,8 @@ export default function Home() {
       <main className={styles.main}>
         {/* Title of the app */}
         <h1>Nothing to see here!</h1>
-        <div>
-          <Link href="/">
-            <button>Go back</button>
-          </Link>
-        </div>
       </main>
-
-      {/* Optional footer section */}
-      <footer className={styles.footer}></footer>
+      <GoBackButton />
     </div>
   );
 }

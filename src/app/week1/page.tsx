@@ -2,6 +2,7 @@
 import { useState } from "react";
 import styles from "./page.module.css";
 import Link from "next/link";
+import GoBackButton from "../components/GoBackButton";
 
 export default function Home() {
   // State to hold the user-entered number
@@ -89,15 +90,8 @@ export default function Home() {
           {/* Display conversion result if available */}
           {result && <h2 style={{ marginTop: "1rem" }}>{result}</h2>}
         </div>
-        <div>
-          <Link href="/">
-            <button>Go back</button>
-          </Link>
-        </div>
       </main>
-
-      {/* Optional footer section */}
-      <footer className={styles.footer}></footer>
+      <GoBackButton />
     </div>
   );
 }
