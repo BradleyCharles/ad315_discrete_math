@@ -7,44 +7,8 @@ export default function Home() {
   // State to hold any input1 validation error message
   const [error, setError] = useState("");
 
-  // State to hold the base selected from the dropdown (default is 2)
-  const [base1, setBase1] = useState("1");
-  const [base2, setBase2] = useState("1");
-
   const [input, setInput] = useState("");
   const [powerSet, setPowerSet] = useState<string[][]>([]);
-
-  // State to store the final result string after conversion
-  const [result1, setResult1] = useState("");
-  const [result2, setResult2] = useState("");
-
-  const [truthTable, setTruthTable] = useState("");
-
-  function logicalAnd(a: boolean, b: boolean): boolean {
-    return a && b;
-  }
-
-  function logicalOr(a: boolean, b: boolean): boolean {
-    return a || b;
-  }
-
-  function logicalNot(a: boolean): boolean {
-    return !a;
-  }
-
-  function implication(a: boolean, b: boolean): boolean {
-    return !a || b;
-  }
-
-  function biconditional(a: boolean, b: boolean): boolean {
-    return a === b;
-  }
-
-  function boolToInt(val: boolean): number {
-    return val ? 1 : 0;
-  }
-
-
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

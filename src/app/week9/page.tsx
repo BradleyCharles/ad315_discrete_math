@@ -3,94 +3,114 @@ import { useState } from "react";
 import styles from "./page.module.css";
 
 export default function Home() {
-  // State to hold the user-entered number
-  const [input, setInput] = useState("");
-
-  // State to hold any input validation error message
+  // State to hold the user-entered values
+  const [firstTerm, setFirstTerm] = useState("");
+  const [commonTerm, setCommonTerm] = useState("");
+  const [numTerms, setNumTerms] = useState("");
+  const [sequenceType, setSequenceType] = useState("1");
   const [error, setError] = useState("");
-
-  // State to hold the base selected from the dropdown (default is 2)
-  const [base, setBase] = useState(2);
-
-  // State to store the final result string after conversion
   const [result, setResult] = useState("");
 
   // Handles input change and validates that only digits are entered
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, setter: (value: string) => void) => {
     const value = e.target.value;
-
-    // Use regex to allow only digits (0-9)
-    if (/^\d*$/.test(value)) {
-      setInput(value); // Valid input
-      setError(""); // Clear any previous error
+    if (/^-?\d*$/.test(value)) {
+      setter(value);
+      setError("");
     } else {
-      setError("Please enter numbers only."); // Show error on invalid input
+      setError("Please enter numbers only.");
     }
   };
 
-  // Converts the entered number to the selected base
-  const convertNumber = () => {
-    // Check if input is empty
-    if (!input) {
-      setError("Input cannot be empty.");
+  // Generates an arithmetic sequence
+  const generateArithmeticSequence = (first: number, common: number, terms: number): number[] => {
+    const sequence: number[] = [];
+    for (let i = 0; i < terms; i++) {
+      sequence.push(first + (i * common));
+    }
+    return sequence;
+  };
+
+  // Generates a geometric sequence
+  const generateGeometricSequence = (first: number, common: number, terms: number): number[] => {
+    const sequence: number[] = [];
+    for (let i = 0; i < terms; i++) {
+      sequence.push(first * Math.pow(common, i));
+    }
+    return sequence;
+  };
+
+  // Generates the sequence based on selected type
+  const generateSequence = () => {
+    // Validate inputs
+    if (!firstTerm || !commonTerm || !numTerms) {
+      setError("All fields must be filled.");
       return;
     }
 
-    // Parse input as a base-10 integer
-    const num = parseInt(input, 10);
+    const first = parseInt(firstTerm);
+    const common = parseInt(commonTerm);
+    const terms = parseInt(numTerms);
 
-    // Convert the number to the selected base and make letters uppercase (for Hex)
-    const converted = num.toString(base).toUpperCase();
+    if (terms <= 0) {
+      setError("Number of terms must be positive.");
+      return;
+    }
 
-    // Set the final result string to display
-    setResult(`${input} in base ${base} is ${converted}`);
+    let sequence: number[];
+    if (sequenceType === "1") {
+      sequence = generateArithmeticSequence(first, common, terms);
+    } else {
+      sequence = generateGeometricSequence(first, common, terms);
+    }
+
+    setResult(`${sequenceType === "1" ? "Arithmetic" : "Geometric"} Sequence: ${sequence.join(", ")}`);
   };
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        {/* Title of the app */}
-        <h1>Enter a number and select the base to convert it to</h1>
+        <h1>Arithmetic and Geometric Sequence Generator</h1>
 
-        {/* Layout for input and dropdown side by side */}
         <div style={{ display: "flex", gap: "2rem", marginBottom: "1rem" }}>
-          {/* Input box for user to enter a number */}
           <div>
+            <p>First term:</p>
             <input
               type="text"
-              value={input}
-              onChange={handleInputChange}
-              placeholder="Enter number"
+              value={firstTerm}
+              onChange={(e) => handleInputChange(e, setFirstTerm)}
+              placeholder="Enter first term"
             />
-            {/* Show error message in red if input is invalid */}
-            {error && <p style={{ color: "red" }}>{error}</p>}
-          </div>
-
-          {/* Dropdown for selecting base (from 2 to 16) */}
-          <div>
+            <p>Common difference/ratio:</p>
+            <input
+              type="text"
+              value={commonTerm}
+              onChange={(e) => handleInputChange(e, setCommonTerm)}
+              placeholder="Enter common term"
+            />
+            <p>Number of terms:</p>
+            <input
+              type="text"
+              value={numTerms}
+              onChange={(e) => handleInputChange(e, setNumTerms)}
+              placeholder="Enter number of terms"
+            />
+            <p>Select sequence:</p>
             <select
-              value={base}
-              onChange={(e) => setBase(parseInt(e.target.value))}
+              value={sequenceType}
+              onChange={(e) => setSequenceType(e.target.value)}
             >
-              {/* Generate base options dynamically */}
-              {Array.from({ length: 15 }, (_, i) => i + 2).map((b) => (
-                <option key={b} value={b}>
-                  Base {b}
-                </option>
-              ))}
+              <option value="1">Arithmetic</option>
+              <option value="2">Geometric</option>
             </select>
+            {error && <p style={{ color: "red" }}>{error}</p>}
           </div>
         </div>
         <div>
-          {/* Button to trigger conversion */}
-          <button onClick={convertNumber}>Convert</button>
-
-          {/* Display conversion result if available */}
+          <button onClick={generateSequence}>Generate</button>
           {result && <h2 style={{ marginTop: "1rem" }}>{result}</h2>}
         </div>
       </main>
-
-      {/* Optional footer section */}
       <footer className={styles.footer}></footer>
     </div>
   );
