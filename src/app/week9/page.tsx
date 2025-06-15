@@ -41,6 +41,21 @@ export default function Home() {
     return sequence;
   };
 
+  // Calculates the sum of an arithmetic sequence
+  const calculateArithmeticSum = (first: number, common: number, terms: number): number => {
+    const lastTerm = first + (terms - 1) * common;
+    return (terms * (first + lastTerm)) / 2;
+  };
+
+  // Calculates the product of a geometric sequence
+  const calculateGeometricProduct = (first: number, common: number, terms: number): number => {
+    let product = 1;
+    for (let i = 0; i < terms; i++) {
+      product *= first * Math.pow(common, i);
+    }
+    return product;
+  };
+
   // Generates the sequence based on selected type
   const generateSequence = () => {
     // Validate inputs
@@ -59,13 +74,17 @@ export default function Home() {
     }
 
     let sequence: number[];
+    let sumOrProduct: number;
+    
     if (sequenceType === "1") {
       sequence = generateArithmeticSequence(first, common, terms);
+      sumOrProduct = calculateArithmeticSum(first, common, terms);
+      setResult(`Arithmetic Sequence: ${sequence.join(", ")}\nSum of sequence: ${sumOrProduct}`);
     } else {
       sequence = generateGeometricSequence(first, common, terms);
+      sumOrProduct = calculateGeometricProduct(first, common, terms);
+      setResult(`Geometric Sequence: ${sequence.join(", ")}\nProduct of sequence: ${sumOrProduct}`);
     }
-
-    setResult(`${sequenceType === "1" ? "Arithmetic" : "Geometric"} Sequence: ${sequence.join(", ")}`);
   };
 
   return (

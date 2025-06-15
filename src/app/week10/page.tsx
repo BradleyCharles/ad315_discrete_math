@@ -4,90 +4,68 @@ import styles from "./page.module.css";
 import GoBackButton from "../components/GoBackButton";
 
 export default function Home() {
-  // State to hold the user-entered number
-  const [input, setInput] = useState("");
-
-  // State to hold any input validation error message
-  const [error, setError] = useState("");
-
-  // State to hold the base selected from the dropdown (default is 2)
-  const [base, setBase] = useState(2);
-
   // State to store the final result string after conversion
   const [result, setResult] = useState("");
 
-  // Handles input change and validates that only digits are entered
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+ const [randomNumbers, setRandomNumbers] = useState<number[]>([]);
 
-    // Use regex to allow only digits (0-9)
-    if (/^\d*$/.test(value)) {
-      setInput(value); // Valid input
-      setError(""); // Clear any previous error
-    } else {
-      setError("Please enter numbers only."); // Show error on invalid input
+    // Generates an array of 25 random numbers between 0 and 99
+  const generateRandomNumbers = () => {
+    const numbers: number[] = [];
+    for (let i = 0; i < 25; i++) {
+      numbers.push(Math.floor(Math.random() * 100));
     }
+    setRandomNumbers(numbers);
+    setResult(`Random Numbers: ${numbers.join(", ")}`);
   };
 
-  // Converts the entered number to the selected base
-  const convertNumber = () => {
-    // Check if input is empty
-    if (!input) {
-      setError("Input cannot be empty.");
-      return;
+const randomArray = findMax(randomNumbers);
+
+function findMax(numbers: number[]): number {
+    let maxNum: number = numbers[0];
+    for (let num of numbers) {
+        if (num > maxNum) {
+            maxNum = num;
+        }
     }
+    return maxNum;
+}
 
-    // Parse input as a base-10 integer
-    const num = parseInt(input, 10);
-
-    // Convert the number to the selected base and make letters uppercase (for Hex)
-    const converted = num.toString(base).toUpperCase();
-
-    // Set the final result string to display
-    setResult(`${input} in base ${base} is ${converted}`);
-  };
+function printPairs(array: number[]): string {
+    let pairs: string[] = [];
+    for (let i = 0; i < array.length; i++) {
+        for (let j = i + 1; j < array.length; j++) {
+            pairs.push(`(${array[i]}, ${array[j]})`);
+        }
+    }
+    return pairs.join(", ");
+}
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         {/* Title of the app */}
-        <h1>Enter a number and select the base to convert it to</h1>
+        <h1>Analyzing Time and Space Complexity</h1>
 
-        {/* Layout for input and dropdown side by side */}
-        <div style={{ display: "flex", gap: "2rem", marginBottom: "1rem" }}>
-          {/* Input box for user to enter a number */}
-          <div>
-            <input
-              type="text"
-              value={input}
-              onChange={handleInputChange}
-              placeholder="Enter number"
-            />
-            {/* Show error message in red if input is invalid */}
-            {error && <p style={{ color: "red" }}>{error}</p>}
-          </div>
-
-          {/* Dropdown for selecting base (from 2 to 16) */}
-          <div>
-            <select
-              value={base}
-              onChange={(e) => setBase(parseInt(e.target.value))}
-            >
-              {/* Generate base options dynamically */}
-              {Array.from({ length: 15 }, (_, i) => i + 2).map((b) => (
-                <option key={b} value={b}>
-                  Base {b}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
         <div>
           {/* Button to trigger conversion */}
-          <button onClick={convertNumber}>Convert</button>
+          <button onClick={() => {
+            generateRandomNumbers();
+            const max = randomArray;
+            setResult(`Complexity Analysis:\nTime Complexity: O(n) - we iterate through the array once\nSpace Complexity: O(1) - we only use a single variable to store the max\n\nNumbers: [${randomNumbers.join(", ")}]\n\nMaximum number is: ${max}`);
+          }}>Find Max</button> 
+        </div>
+
+        <div>
+          {/* Button to trigger conversion */}
+          <button onClick={() => {
+            generateRandomNumbers();
+            const pairs = printPairs(randomNumbers);
+            setResult(`Complexity Analysis:\nTime Complexity: O(n²) - we use nested loops to generate all pairs\nSpace Complexity: O(n²) - we store all possible pairs in an array\n\nNumbers: [${randomNumbers.join(", ")}]\n\nPairs: [${pairs}]`);
+          }}>Find Pairs</button>
 
           {/* Display conversion result if available */}
-          {result && <h2 style={{ marginTop: "1rem" }}>{result}</h2>}
+          {result && <h2 style={{ marginTop: "1rem", whiteSpace: "pre-line" }}>{result}</h2>}
         </div>
       </main>
       <GoBackButton />
